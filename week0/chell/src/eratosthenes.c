@@ -52,7 +52,7 @@ int main( int argc, char** argv ) {
 	int i;
 	for( i = 0; i < SIZE; i++) {
 		if( bitmap[i] == 0) {
-			printf( "%d_is_prime.\n" , i );
+			printf( "%d is prime.\n" , i );
 		} //if
 	} //for
   exit(0);
