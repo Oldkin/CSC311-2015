@@ -9,15 +9,23 @@
 
 // this program will identify all
 // prime numbers that are < SIZE
+#define SIZE 1000000
+
+int bitmap[SIZE]
 
 // filter() executes the Sieve of Eratosthenes
 // algorithm
-  
+  void filter(){
+	int i = 0;
+	int j = 2;
+	
   // initialize bitmap (array of zeroes and ones)
   // 0 and 1 are not prime
   // begin by assuming that any integer >= 2 could
   // be prime
-
+bitmap[0] = 1;
+bitmap[1] = 2;
+for( i = 2; i < SIZE; i++ ) {
     // bitmap[i] = 0 means i could be prime
     // (the next loop will determine if i is really prime)
 
