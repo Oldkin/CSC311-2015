@@ -34,13 +34,16 @@ void filter() {
   // start the search for prime numbers
   // at 2
 	i = 2;
-	while(i < SIZE) {
+	while( i < SIZE ) {
 		if( bitmap[i] == 0 ) {
       		// if i is prime, then all of its 
      	        // multiples are composite (not prime)
-		for (j = i + i; j < SIZE; j += i) {
-			bitmap[j] = 1;
-		} //for
+			for ( j = i + i; j < SIZE; j += i ) {
+				bitmap[j] = 1;
+			} //for
+		} //if
+		i++ ;
+
 	} // while
 } //filter
 
@@ -50,10 +53,10 @@ int main( int argc, char** argv ) {
 
   // print all of the prime numbers < SIZE
 	int i;
-	for( i = 0; i < SIZE; i++) {
-		if( bitmap[i] == 0) {
+	for( i = 0; i < SIZE; i++ ) {
+		if( bitmap[i] == 0 ) {
 			printf( "%d is prime.\n" , i );
 		} //if
 	} //for
-  exit(0);
+  	exit(0);
 } // main( int, char** )
