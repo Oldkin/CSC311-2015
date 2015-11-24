@@ -1,63 +1,378 @@
-
 // schedules.c
-// Norbert Wiener
+// Theresa Dinh
 // CSC311 Systems Software
-// 23 November 2015
+// November 23, 2015
 
-
-// An illustration of several features
-// of the C programming language.
-//   1) preprocessor directives (#include and #define)
-//   2) header files (stdio.h, stdlib.h, time.h, math.h)
-//   3) typedefs
-//   4) structs
-//   5) library functions (malloc(), srand(), rand(), log())
-//   6) casts 
-//   7) pointers
+// features:
+// -preprocessor directives #include and #define
+// -header files stdio.h, time.h
+// -typedefs
+// -structs
+// -library functions malloc(), srand()
+// -casts
+// -pointers
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <math.h>
 
-// define a node in a linked list
-// that describes a process (a task)
-// this description includes:
-//   1) the time required to complete the process
-//   2) the time until the next process joins the queue
+#define MEAN_SERVICE_TIME 2.0
+#define MEAN_INTERARRIVAL_TIME 3.0
 
-int main( int argc, char **argv ) {
+typedef struct process ProcessRecord, *ProcessRecordPointer;
 
-  // Seed the random number generator
-  // with the time measured in seconds.
-  // "time_t" is a just another name for
-  // a long (64 bit) integer.
+// define a node in a linked list that describes a process/task
+// - time required to complete process
+// - time until next process joins queue
 
-  // NULL is a constant defined for us.
-  // (It is zero.)
+struct process
+{
+int id ;
+double timeToService;
+double timeUntilNextProcess;
+ProcessRecordPointer np;
+};	
 
-  // Must declare counter before beginning loop!
+int main (int argc, char **argv)
+{
+// seed the rng with the time measured in seconds
+// "time_t" is another 64bit integer
+time_t t = time(NULL);
+srand(t);
 
-    // malloc() is the function for "memory allocation"
-    // sizeof is an operator that tells us how many bytes
-    // we'll need to store an object of a given type.
-    // malloc() returns a general kind of pointer (void *)
-    // so we must cast it to remind the compiler to what 
-    // kind of object we are pointing.
+//  Null is a constant defined for us. It's zero
+ProcessRecordPointer rootPointer = NULL;
+ProcessRecordPointer pp = NULL;
+ProcessRecordPointer cp = NULL;
 
-    // draw a random number from an exponential distribution
-    // with a specified mean
+// must declare counter before beginning loop
+int i;
+for (i = 0; i < 12; i++)
+{
 
-    // draw a random number from an exponential distribution
-    // with a specified mean
-    
-    // add this process to the list of processes
-    // (this is the "linking" part of the linked list)
+// malloc() is the function for memory allocation 
+// sizeof is an operator that tells us how many bytes we 
+// need to store an object of a given type
+// malloc() returns a general kind of pointer (void *)
+// so must cast it to remind compiler what kind of object
+// we are pointing to
+cp = (ProcessRecordPointer) malloc( sizeof(ProcessRecord) );
+cp->id = i;
 
-  // traverse the list.
-  // begin at the last element added to the list
-  // and end with the first element we added to the list.
+// draw a random number from an exponential distribution
+// with a specified mean
+double r = ((double) rand())/RAND_MAX;
+cp->timeToService = -MEAN_SERVICE_TIME * log(r);
 
-  printf( "Hello from schedules!\n" );
+// draw a random number from an exponential distribution
+// with a specified mean
+r = ((double) rand())/RAND_MAX;
+cp->timeUntilNextProcess = -MEAN_INTERARRIVAL_TIME * log(r);
 
-  exit(0);  
-} // main( int, char** )
+// add this process to the list of processes 
+// the linking part of the linked list
+cp->np = pp;
+pp = cp;
+}
+rootPointer = cp;
 
+// traverse the list
+// begin at last element added to list
+// and end with the first element we added to the list
+cp = rootPointer;
+while(cp != NULL)
+{
+printf("process id = %d\n", cp->id);
+printf("\t service time = %8.f\n", cp->timeToService);
+printf("\t interarrival time = %8.4f\n", cp->timeUntilNextProcess);
+cp = cp->np;
+}
+exit(0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
