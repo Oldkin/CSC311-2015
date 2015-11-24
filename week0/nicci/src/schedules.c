@@ -23,7 +23,7 @@
 #define MEAN_SERVICE_TIME 2.0
 #define MEAN_INTERARRIVAL_TIME 3.0
 
-typedef struct process ProcessRecord, *ProcessRecord Pointer ;
+typedef struct process ProcessRecord, *ProcessRecordPointer ;
 
 // define a node in a linked list
 // that describes a process (a task)
@@ -32,7 +32,7 @@ typedef struct process ProcessRecord, *ProcessRecord Pointer ;
 //   2) the time until the next process joins the queue
 struct process {
   int id ; 
-  double timeTOSERVICE ;
+  double timeToService ;
   double timeUntilNextProcess ;
   ProcessRecordPointer np ;
 } ; 
@@ -51,7 +51,7 @@ int main( int argc, char **argv ) {
   // (It is zero.)
   ProcessRecordPointer rootPointer = NULL;
   ProcessRecordPointer pp = NULL;
-  ProcessRecordPointer cp = NULL:
+  ProcessRecordPointer cp = NULL;
 
   // Must declare counter before beginning loop!
   int i ;
@@ -66,21 +66,35 @@ int main( int argc, char **argv ) {
     cp = (ProcessRecordPointer) malloc( sizeof(ProcessRecord) ) ;
     cp->id = i ;
 
+    // draw a random number from an exponential distribution
+    // with a specified mean
+    double r = ((double) rand())/RAND_MAX ;
+    cp->timeToService = -MEAN_SERVICE_TIME * log(r) ;
 
     // draw a random number from an exponential distribution
     // with a specified mean
+    r = ((double) rand())/RAND_MAX ;
+    cp->timeUntilNextProcess = -MEAN_INTERARRIVAL_TIME * log(r) ;
 
-    // draw a random number from an exponential distribution
-    // with a specified mean
-    
     // add this process to the list of processes
     // (this is the "linking" part of the linked list)
+    cp->np = pp ; 
+    pp=cp ;
+  }//for
+    rootPointer = cp ;
 
   // traverse the list.
   // begin at the last element added to the list
   // and end with the first element we added to the list.
+    cp = rootPointer;
+    while( cp != NULL ) {
+      printf( "process_id_=_%d\n" , cp->id );
+      printf( "\t_service_time_+_%8.4f\n" , cp->timeToService ) ;
+      printf( "\t_interarrival_time_=_%8.4f\n" , cp->timeUntilNextProcess );
+      cp = cp-> np;
+    }//while
 
-  printf( "Hello from schedules!\n" );
+    // printf( "Hello from schedules!\n" );
 
   exit(0);  
 } // main( int, char** )
