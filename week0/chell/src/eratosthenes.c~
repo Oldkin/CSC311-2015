@@ -34,16 +34,14 @@ void filter() {
   // start the search for prime numbers
   // at 2
 	i = 2;
-	while( i < SIZE ) {
+	while(i < SIZE) {
 		if( bitmap[i] == 0 ) {
       		// if i is prime, then all of its 
      	        // multiples are composite (not prime)
-			for ( j = i + i; j < SIZE; j += i ) {
+			for (j = i + i; j < SIZE; j += i) {
 				bitmap[j] = 1;
 			} //for
 		} //if
-		i++ ;
-
 	} // while
 } //filter
 
