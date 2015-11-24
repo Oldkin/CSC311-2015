@@ -72,7 +72,7 @@ int main( int argc, char **argv ) {
     // draw a random number from an exponential distribution
     // with a specified mean
 		r = ((double) rand())/RAND_MAX ;
-		cp->timeUntilNextProcess = -MEAN_INTERARRIVAL_TIME * log(r);
+		cp->timeUntilNextProcess = -MEAN_INTERARRIVAL_TIME * log(r) ;
     
     // add this process to the list of processes
     // (this is the "linking" part of the linked list)
@@ -88,7 +88,7 @@ int main( int argc, char **argv ) {
 	while( cp != NULL ) {
 		printf( "process id = %d\n", cp->id ) ;
 		printf( "\t service time = %8.4f\n", cp->timeToService ) ;
-		printf( "\t interarrival time = %8.4f\n", cp->timeUntilNextProcess )
+		printf( "\t interarrival time = %8.4f\n", cp->timeUntilNextProcess ) ;
 		cp = cp->np;
 	} //while
   exit(0);  
