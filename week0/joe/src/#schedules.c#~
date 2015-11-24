@@ -62,19 +62,4 @@ cp->timeToService = -MEAN_SERVICE_TIME * log(r);
 
 rootPointer = cp;
 
-//transerse the list
-// began at the last element added to the list and end with the first elemtn we added to the list.
-
-cp = rootPointer;
-while( cp != NULL ){
-prinf( "process_id_ID=%d\n", cp->id );
-prinf( "\t_service_time_=_%8.4f\n" , cp->timeToService );
-prinf( "\_interarrival_time_=_%8.4f\n" , cp->timeUntilNextProcess );
-
-cp = cp->np;
-}
-
-exit(0);
-}
-
 
