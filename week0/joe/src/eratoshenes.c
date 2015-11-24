@@ -8,7 +8,7 @@
 
 // this program will identify all
 // prime numbers that are < SIZE
-#define size 1000000
+#define SIZE 1000000
 
 int bitmap[SIZE] ;
 
@@ -48,7 +48,7 @@ int main( int argc, char** argv ) {
   int i;
   for( i = 0; i < SIZE; i++){
     if( bitmap[i] == 0 ) {
-      prinf( "%d_is_prime.\n", i );
+      printf( "%d_is_prime.\n", i );
     }
   }
   exit(0);

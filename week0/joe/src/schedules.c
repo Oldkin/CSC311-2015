@@ -12,7 +12,7 @@
 //  7) pointers
 
 #include <stdio.h>
-#include <stdlb.h>
+#include <stdlib.h>
 #include <time.h>
 #include <math.h>
 
@@ -46,12 +46,16 @@ int main( int argc, char **argv ){
 // malloc() is the function for 'memory allocation' 
 // sizeof is an operator that tells us how many bytes we'll need to store an object of a given type
 // malloc() returns a general kind of pointer (void *)
-so we must cast it to remind the compiler to what kind of object we are pointing.
-cp = (ProcessRecord Pointer) malloc( sizeof(ProcessRecord) );
-cp->timeToService = -MEAN_SERVICE_TIME * log(r);
+//so we must cast it to remind the compiler to what kind of object we are pointing.
+cp = (ProcessRecordPointer) malloc( sizeof(ProcessRecord) );
+ cp->id = i;
+
+ //draw a random number
+ double r = ((double) rand())/RAND_MAX ;
+ cp->timeToService = -MEAN_SERVICE_TIME * log(r);
 
 //draw a random number from an exponential distrubtion with a specified mean
- doulbe r = ((double) rand())/RAND_MAX;
+ r = ((double) rand())/RAND_MAX;
  cp->timeUntilNextProcess =-MEAN_INTERARRIVAL_TIME * log(r) ;
 
 //add this process to the list of processes (this is the linking part of the linked list)
@@ -67,9 +71,9 @@ rootPointer = cp;
 
 cp = rootPointer;
 while( cp != NULL ){
-prinf( "process_id_ID=%d\n", cp->id );
-prinf( "\t_service_time_=_%8.4f\n" , cp->timeToService );
-prinf( "\_interarrival_time_=_%8.4f\n" , cp->timeUntilNextProcess );
+printf( "process_id_ID=%d\n", cp->id );
+printf( "\t_service_time_=_%8.4f\n" , cp->timeToService );
+printf( "\t_interarrival_time_=_%8.4f\n" , cp->timeUntilNextProcess );
 
 cp = cp->np;
 }

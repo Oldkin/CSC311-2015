@@ -14,15 +14,15 @@ struct node {
 
 // define aliases
 typedef struct node Node;
-typedef struct node NodePointer;
+typedef struct node* NodePointer;
 
 // define a function that will create
 // a new tree that contains only a single
 // node
 
-NodePointer createRott( int n ) {
-  NodePointer np = (NodePointer) malloc( sizeof(node) );
-  np->value  = n;
+NodePointer createRoot( int n ) {
+  NodePointer np = (NodePointer) malloc( sizeof(Node) );
+  np->value = n;
   np->lp = NULL;
   np->rp = NULL;
   return np;
@@ -37,7 +37,7 @@ NodePointer addNode( NodePointer np, int n) {
   if( np == NULL) {
     rp = createRoot( n );
   }
-  else if{n < np->value ) {
+  else if(n < np->value ) {
     if( np->lp == NULL ) {
       np->lp = createRoot( n );
     }
@@ -45,8 +45,8 @@ NodePointer addNode( NodePointer np, int n) {
       np->lp = addNode( np->lp, n);
     }
   }
-    else if( n > np-value ) {
-      if( np>-rp == NULL ){
+    else if( n > np->value ) {
+      if( np->rp == NULL ){
 	np->rp = createRoot( n );
       }
       else{
@@ -67,7 +67,7 @@ NodePointer addNode( NodePointer np, int n) {
 void printNodes ( NodePointer np ){
   if ( np != NULL ) {
     printNodes( np->lp );
-    printf( "values_at_node=_%4d\n". np->value );
+    printf( "values_at_node=_%4d\n", np->value );
     printNodes( np-> rp );
   }
 }
