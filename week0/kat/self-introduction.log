@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.7.27)  23 NOV 2015 13:48
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.7.27)  24 NOV 2015 10:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -868,12 +868,12 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4> not available
 \tf@snm=\write8
 \openout8 = `self-introduction.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 141.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 141.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 145.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 145.
 
 (./self-introduction.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 141.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 141.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 145.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 145.
 Package rerunfilecheck Info: File `self-introduction.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
@@ -881,7 +881,7 @@ Package rerunfilecheck Info: File `self-introduction.out' has not changed.
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.0pt have occurred.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 141.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 145.
  ) 
 Here is how much of TeX's memory you used:
  16871 strings out of 493304
@@ -896,7 +896,7 @@ Here is how much of TeX's memory you used:
 texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-di
 st/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on self-introduction.pdf (5 pages, 73993 bytes).
+Output written on self-introduction.pdf (5 pages, 75157 bytes).
 PDF statistics:
  184 PDF objects out of 1000 (max. 8388607)
  157 compressed objects within 2 object streams
