@@ -1,0 +1,65 @@
+
+// Joseph Sterchele
+// CSC311 System Software
+
+//An illistration of several features of the C programming language.
+//  1) preprocessor directives( #includes and #define)
+//  2) header files -- libraries-- 
+//  3) typedefs
+//  4) structs
+//  5) library functions
+//  6) casts
+//  7) pointers
+
+#include <stdio.h>
+#include <stdlb.h>
+#include <time.h>
+#include <math.h>
+
+#define MEAN_SERVICE_TIME 2.0
+#define MEAN_INTERARRIVAL_TIME 3.0
+
+typedef struct process ProcessRecord, *ProcessRecordPointer ;
+
+struct process {
+  int id;
+  double timeToService;
+  double timeUntilNextProcess;
+  ProcessRecordPointer np;
+};
+int main( int argc, char **argv ){
+  //seeds the random number generator
+  //with the time measured in seconds.
+  // "time_t" is just another name for a long (64bit) integer.
+  time_t t = time(NULL);
+  srand( t );
+
+  // Null is a constant defined for us.
+  // (It is zero.)
+  ProcessRecordPointer rootPointer = NULL;
+  ProcessRecordPointer pp = NULL;
+  ProcessRecordPointer cp = NULL;
+
+  // Must declare counter before beginning loop!
+ int i ;
+ for( i = 0; i < 12; i++ ){
+// malloc() is the function for 'memory allocation' 
+// sizeof is an operator that tells us how many bytes we'll need to store an object of a given type
+// malloc() returns a general kind of pointer (void *)
+so we must cast it to remind the compiler to what kind of object we are pointing.
+cp = (ProcessRecord Pointer) malloc( sizeof(ProcessRecord) );
+cp->timeToService = -MEAN_SERVICE_TIME * log(r);
+
+//draw a random number from an exponential distrubtion with a specified mean
+ doulbe r = ((double) rand())/RAND_MAX;
+ cp->timeUntilNextProcess =-MEAN_INTERARRIVAL_TIME * log(r) ;
+
+//add this process to the list of processes (this is the linking part of the linked list)
+
+  cp->np = pp;
+  pp = cp;
+}
+
+rootPointer = cp;
+
+

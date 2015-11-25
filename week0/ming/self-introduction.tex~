@@ -1,0 +1,158 @@
+
+%%
+%% This file contains examples of slides
+%% that contain:
+%%  0) a title
+%%  1) a quotation
+%%  2) itemized lists
+%%
+%% Edit this file in Linux by
+%% typing:
+%%   emacs self-introduction.tex &
+%%
+%% Create slides to use in your presentation. 
+%% Follow the examples that I have given you.
+%%
+%% Create a PDF file from this file
+%% by typing:
+%%   pdflatex self-introduction.tex
+%%
+%% Display a PDF file in Linux by
+%% typing:
+%%   evince self-introduction.pdf &
+%%
+
+\documentclass{beamer}
+\title{Autobiographical Note}
+\author{Norbert Wiener}
+\institute{Cornell College}
+\date{23 November 2015}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{listings}
+\lstset{language=c}
+
+\setlength{\parskip}{12pt}
+
+\usetheme{Dresden}
+
+%% Try any of these themes:
+%% AnnArbor
+%% Antibes
+%% Bergen
+%% Berkeley
+%% Berlin
+%% Boadilla
+%% CambridgeUS
+%% Copenhagen
+%% Darmstadt
+%% Dresden
+%% Frankfurt
+%% Goettingen
+%% Hannover
+%% Ilmenau
+%% JuanLesPins
+%% Luebeck
+%% Madrid
+%% Malmoe
+%% Marburg
+%% Montpelier
+%% PaloAlto
+%% Pittsburgh
+%% Rochester
+%% Singapore
+%% Szeged
+%% Warsaw
+
+\usecolortheme{dolphin}
+
+%% Try any of these color themes:
+%% albatross
+%% beaver
+%% beetle
+%% crane
+%% dolphin
+%% dove
+%% fly 
+%% lily
+%% orchid
+%% rose
+%% seagull
+%% seahorse
+%% whale
+%% wolverine
+
+\usefonttheme{default}
+
+%% Try any of these font themes:
+%% default
+%% professionalfonts
+%% serif
+%% structurebold
+%% structureitalicserif
+%% structuresmallcapsserif
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Quotation}
+\begin{quotation}
+\noindent
+``No, the future offers very little hope for those who expect that our
+  new mechanical slaves will offer us a world in which we may rest
+  from thinking. Help us they may, but at the cost of supreme demands
+  upon our honesty and our intelligence.  The world of the future will
+  be an ever more demanding struggle against the limitations of our
+  intelligence, not a comfortable hammock in which we can lie down to
+  be waited upon by our robot slaves.''
+  \flushright
+  ---Norbert Wiener
+  \end{quotation}
+\end{frame}
+
+\begin{frame}{Biographical facts}
+\begin{itemize}
+  \item born 26 November 1894 in Columbia, Missouri
+  \item child prodigy
+  \item BA, Tufts University, 1909
+  \item PhD, Harvard University, 1913
+  \item long career as legendary professor of mathematics, MIT
+  \item died 18 March 1964 in Stockholm, Sweden
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Interesting facts}
+\begin{itemize}
+  \item crater on the moon is named for Norbert Wiener
+  \item spaceship in Robert Heinlein story
+    named \emph{Norbert Wiener}
+  \item \emph{Norbert Wiener Prize in Applied Mathematics} honors him
+  \item affectionately remembered as an absent-minded professor
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Special interests}
+\begin{itemize}
+  \item Brownian motion, control \& information theory,
+    automation
+  \item how technological innovation will
+    change society 
+  \begin{itemize}
+    \item wrote \emph{The Human Use of Human Beings}
+    \end{itemize}
+  \item how feedback in machines might imitate feedback in body
+  \begin{itemize}
+    \item wrote \emph{Cybernetics: Or Control
+      and Communication in the Animal and the Machine}
+    \end{itemize}
+  \item studied in China (learned Mandarin), Mexico, Germany, UK
+  \end{itemize}
+\end{frame}
+
+\end{document}
+
