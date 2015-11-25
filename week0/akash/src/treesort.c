@@ -46,7 +46,7 @@ NodePointer addNode(NodePointer np, int n){
         } // else
 } // else if
     else if(n > np->value){
-        if(np->rp = NULL){
+        if(np->rp == NULL){
             np->rp = createRoot(n);
         } // if
         else{
@@ -66,7 +66,7 @@ NodePointer addNode(NodePointer np, int n){
 // found at each node
 void printNodes( NodePointer np) {
     if (np != NULL) {
-        printNodes( np-> lp);
+        printNodes( np->lp);
         printf("values at node = %4d\n", np->value);
         printNodes( np->rp);
     } // if
@@ -83,7 +83,7 @@ int main( int argc, char** argv ) {
         
         int i;
         for(i = 2; i < argc; i++){
-            rp = addNode( rp, atoi(arvg[1]));
+            rp = addNode( rp, atoi(argv[i]));
         } // for
         
         printNodes(rp);
