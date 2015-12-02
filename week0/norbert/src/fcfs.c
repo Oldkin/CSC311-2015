@@ -17,7 +17,9 @@
 
 int main( int argc, char** argv ) {
 
-  testQueue( 6 );
+  //testQueue( 6 );
+
+  testPriorityQueue();
 
   exit(0);
 } //  main( int, char** )
