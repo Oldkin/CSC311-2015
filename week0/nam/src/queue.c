@@ -317,6 +317,7 @@ void testQueue( int numberOfProcesses ) {
   printf( "\n" );
   // calculate stuffs here
   computeStuff(qp);
+
   printProcessesInQueue( qp );
 
   printf( "\nBegin removing elements from the queue.\n\n" );
@@ -350,7 +351,21 @@ QueuePointer buildQueue( int numberOfProcesses ) {
 
 int main( int argc, char** argv ) {
 
-  testQueue( 6 );
+  //testQueue( 6 );
+
+  QueuePointer processQueue = buildQueue(7);
+  computeStuff(processQueue);
+
+  NodePointer cp;
+  cp = processQueue->pointerToHead;
+  double totalProcessTime = 0;
+  while (cp != NULL) {
+    totalProcessTime += cp->processPointer->serviceTime;
+    printProcess(cp->processPointer);
+    cp = cp->pointerToPrevNode; 
+  }
+  printf("Mean Process Time is: ");
+  printf("%8.4f", totalProcessTime/7);
 
   exit(0);
 } //  main( int, char** )
