@@ -373,7 +373,8 @@ double maxWaitingTime(QueuePointer processQueuePointer) {
   NodePointer cp;
     cp = processQueuePointer->pointerToHead;
     while (cp != NULL) {
-      double waitingTime = serviceStartTime-arrivalTime
+      double waitingTime = cp->processPointer->serviceStartTime - 
+                              cp->processPointer->arrivalTime;
       if (waitingTime > maxTime) {
         maxTime = waitingTime;
       }
