@@ -348,24 +348,53 @@ QueuePointer buildQueue( int numberOfProcesses ) {
 
   return qp;
 } // buildQueue( int )
-
+double computeMeanTimeProcess (QueuePointer processQueuePointer) {
+  NodePointer cp;
+    cp = processQueuePointer->pointerToHead;
+    double total = 0;
+    while (cp != NULL) {
+      total += cp->processPointer->serviceTime;
+      cp = cp->pointerToPrevNode; 
+  }
+  return total / processQueuePointer->length;
+}
+double computeAverageInterarrivalTime(QueuePointer processQueuePointer) {
+  NodePointer cp;
+    cp = processQueuePointer->pointerToHead;
+    double total = 0;
+    while (cp != NULL) {
+      total += cp->processPointer->interarrivalTime;
+      cp = cp->pointerToPrevNode; 
+  }
+  return total / processQueuePointer->length;
+}
+double maxWaitingTime(QueuePointer processQueuePointer) {
+  double maxTime;
+  NodePointer cp;
+    cp = processQueuePointer->pointerToHead;
+    while (cp != NULL) {
+      double waitingTime = serviceStartTime-arrivalTime
+      if (waitingTime > maxTime) {
+        maxTime = waitingTime;
+      }
+      cp = cp->pointerToPrevNode; 
+  }
+  return maxTime;
+}
 int main( int argc, char** argv ) {
 
   //testQueue( 6 );
 
-  QueuePointer processQueue = buildQueue(7);
-  computeStuff(processQueue);
+  QueuePointer processQueuePointer = buildQueue(10);
+  computeStuff(processQueuePointer);
+  printProcessesInQueue(processQueuePointer);
+  printf("Average Process Time is: ");
+  printf("%8.4f\n", computeMeanTimeProcess(processQueuePointer));
+  printf("Average Interarrival Time is: ");
+  printf("%8.4f\n", computeAverageInterarrivalTime(processQueuePointer));
+  printf("Maximum Waiting Iime is: ");
+  printf("%8.4f\n", maxWaitingTime(processQueuePointer));
 
-  NodePointer cp;
-  cp = processQueue->pointerToHead;
-  double totalProcessTime = 0;
-  while (cp != NULL) {
-    totalProcessTime += cp->processPointer->serviceTime;
-    printProcess(cp->processPointer);
-    cp = cp->pointerToPrevNode; 
-  }
-  printf("Mean Process Time is: ");
-  printf("%8.4f", totalProcessTime/7);
 
   exit(0);
 } //  main( int, char** )
