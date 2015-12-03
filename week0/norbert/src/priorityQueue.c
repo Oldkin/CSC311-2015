@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "process.h"
 #include "priorityQueue.h"
 
 // compare 2 elements that are in the priority queue

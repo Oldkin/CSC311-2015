@@ -23,6 +23,12 @@ fcfs: src/fcfs.c src/priorityQueue.c src/process.c src/queue.c
 	gcc fcfs.o priorityQueue.o process.o queue.o -lm -o fcfs
 
 clean:
-	rm -f eratosthenes src/eratosthenes.c~
-	rm -f schedules src/schedules.c~
-	rm -f treesort src/treesort.c~
+	rm -f eratosthenes eratosthenes.o src/eratosthenes.c~
+	rm -f schedules schedules.o src/schedules.c~
+	rm -f treesort treesort.o src/treesort.c~
+	rm -f queue queue.o  
+	rm -f src/queue.h~ src/queue.c~
+	rm -f priorityQueue priorityQueue.o
+	rm -f src/priorityQueue.h~ src/priorityQueue.c~
+	rm -f process process.o 
+	rm -f src/process.h~ src/process.c~

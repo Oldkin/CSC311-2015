@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 #include "process.h"
+#include "priorityQueue.h"
 #include "queue.h"
 
 // This is that start of a program to simulate the 
@@ -16,6 +17,7 @@
 // front of a teller's window).
 
 int main( int argc, char** argv ) {
+  seedRandomNumberGenerator();
 
   //testQueue( 6 );
 
