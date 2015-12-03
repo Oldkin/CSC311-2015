@@ -292,6 +292,10 @@ ProcessPointer dequeue( QueuePointer qp ) {
   return pp;
 } // dequeue( QueuePointer )
 
+// Priority Queue for Process
+// 
+//
+//
 typedef struct priorityQueue PriorityQueue, *PriorityQueuePointer;
 
 struct priorityQueue {
@@ -304,7 +308,7 @@ struct priorityQueue {
   PriorityQueuePointer pq = (PriorityQueuePointer) malloc(sizeof(PriorityQueue));
   pq->capacity = maximumSize;
   pq->size = 0;
-  pq->data = (ProcessPointer) malloc((1 + maximumSize) * sizeof(Process));
+  pq->data = (ProcessPointer *) malloc((1 + maximumSize) * sizeof(Process));
 
   int i;
   for( i = 0; i < maximumSize; i++ ) {
@@ -325,8 +329,8 @@ int compareProcess(ProcessPointer pp1, ProcessPointer pp2) {
     return 0;
 }
 
-void swap(int *data,int i, int j){
-  int temp = data[i];
+void swap(ProcessPointer *data,int i, int j){
+  ProcessPointer temp = data[i];
   data[i] = data[j];
   data[j] = temp;
 }
@@ -334,12 +338,10 @@ bool isPriorityQueueEmpty( PriorityQueuePointer pq ) {
   return pq->size == 0;
 } // isPriorityQueueEmpty( PriorityQueuePointer )
 
-void rise( int data[], int i ) {
+void rise( ProcessPointer data[], int i ) {
   int j = i/2;
   if( i > 1 && compareProcess(data[j], data[i]) == 1 ) {
-    int temp = data[i];
-    data[i] = data[j];
-    data[j] = temp;
+    swap(data, i, j);
 
     rise( data, j );
   } // if
@@ -367,12 +369,13 @@ void printPriorityQueue( PriorityQueuePointer pq ) {
 void fall( PriorityQueuePointer pq, int i ) {
   int j = 2 * i;
   int k = 2 * i + 1;
-  if( k <= pq->size && compareProcess(data[k], data[j]) = -1 ) {
+  ProcessPointer *data = pq->data;
+  if( k <= pq->size && compareProcess(data[k], data[j]) == -1 ) {
     j = k;
   } // if
 
-  if( j <= pq->size && compareProcess(data[i], data[j]) = 1 ) {
-    swap(qp->data, i, j);
+  if( j <= pq->size && compareProcess(data[i], data[j]) == 1 ) {
+    swap(data, i, j);
 
     fall( pq, j );
   } // if
@@ -380,7 +383,7 @@ void fall( PriorityQueuePointer pq, int i ) {
 
 ProcessPointer pqDequeue( PriorityQueuePointer pq ) {
   if( pq->size > 0 ) {
-    printPriorityQueue( pq );
+    // printPriorityQueue( pq );
 
     ProcessPointer result = pq->data[1];
     pq->data[1] = pq->data[pq->size];
@@ -392,7 +395,8 @@ ProcessPointer pqDequeue( PriorityQueuePointer pq ) {
     return result;
   } // if
   else {
-    return -99;
+    ProcessPointer garb = createProcess();
+    return garb;
   } // else
 } // pqEnqueue()
 
@@ -492,14 +496,16 @@ int main( int argc, char** argv ) {
 
   //testQueue( 6 );
 
-  QueuePointer processQueuePointer = buildQueue(100);
-  PriorityQueuePointer qpq = createPriorityQueue(1000);
-  while ( !isQueueEmpty(processQueuePointer)) {
-    ProcessPointer pp = dequeue(processQueuePointer);
-    pqEnqueue(qpq, pp);
+  QueuePointer qp= buildQueue(100);
+  PriorityQueuePointer pqp = createPriorityQueue(1000);
+  while ( !isQueueEmpty(qp)) {
+    ProcessPointer pp = dequeue(qp);
+    pqEnqueue(pqp, pp);
   }
-  printPriorityQueue(pqp);
-
+  while ( !isPriorityQueueEmpty(pqp)) {
+    ProcessPointer pp = pqDequeue(pqp);
+    printProcess(pp);
+  }
   // computeStuff(processQueuePointer);
   // printProcessesInQueue(processQueuePointer);
   // printf("Average Process Time is: ");
