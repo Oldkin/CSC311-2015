@@ -219,8 +219,6 @@ void computeStuff( QueuePointer qp ) {
   }
 }
 
-
-
 // Print a complete description of the 
 // process referenced in each element (node)
 // of the queue.
@@ -294,6 +292,115 @@ ProcessPointer dequeue( QueuePointer qp ) {
   return pp;
 } // dequeue( QueuePointer )
 
+typedef struct priorityQueue PriorityQueue, *PriorityQueuePointer;
+
+struct priorityQueue {
+  int capacity;
+  int size;
+  ProcessPointer *data;
+}; // priorityQueue
+
+  PriorityQueuePointer createPriorityQueue( int maximumSize ) {
+  PriorityQueuePointer pq = (PriorityQueuePointer) malloc(sizeof(PriorityQueue));
+  pq->capacity = maximumSize;
+  pq->size = 0;
+  pq->data = (ProcessPointer) malloc((1 + maximumSize) * sizeof(Process));
+
+  int i;
+  for( i = 0; i < maximumSize; i++ ) {
+    pq->data[i] = 0;
+  } // for
+
+  return pq;
+} // createPriorityQueue( int )
+
+int compareProcess(ProcessPointer pp1, ProcessPointer pp2) {
+  if (pp1->serviceTime > pp2->serviceTime) {
+    return 1;
+  }
+  else if (pp1->serviceTime < pp2->serviceTime) {
+    return -1;
+  }
+  else
+    return 0;
+}
+
+void swap(int *data,int i, int j){
+  int temp = data[i];
+  data[i] = data[j];
+  data[j] = temp;
+}
+bool isPriorityQueueEmpty( PriorityQueuePointer pq ) {
+  return pq->size == 0;
+} // isPriorityQueueEmpty( PriorityQueuePointer )
+
+void rise( int data[], int i ) {
+  int j = i/2;
+  if( i > 1 && compareProcess(data[j], data[i]) == 1 ) {
+    int temp = data[i];
+    data[i] = data[j];
+    data[j] = temp;
+
+    rise( data, j );
+  } // if
+} // rise( int[], int )
+
+void pqEnqueue( PriorityQueuePointer pq, ProcessPointer pp ) {
+  if( pq->size < pq->capacity ) {
+    int index = 1 + pq->size;
+    pq->data[index] = pp;
+
+    rise( pq->data, index );
+
+    pq->size++;
+  } // if
+} // pqEnqueue( int )
+
+void printPriorityQueue( PriorityQueuePointer pq ) {
+  int i;
+  for( i = 1; i <= pq->size; i++ ) {
+    printProcess(pq->data[i]);
+  } // for
+  printf( "\n" );
+} // printPriorityQueue( PriorityQueuePointer )
+
+void fall( PriorityQueuePointer pq, int i ) {
+  int j = 2 * i;
+  int k = 2 * i + 1;
+  if( k <= pq->size && compareProcess(data[k], data[j]) = -1 ) {
+    j = k;
+  } // if
+
+  if( j <= pq->size && compareProcess(data[i], data[j]) = 1 ) {
+    swap(qp->data, i, j);
+
+    fall( pq, j );
+  } // if
+} // fall( PriorityQueuePointer, int )
+
+ProcessPointer pqDequeue( PriorityQueuePointer pq ) {
+  if( pq->size > 0 ) {
+    printPriorityQueue( pq );
+
+    ProcessPointer result = pq->data[1];
+    pq->data[1] = pq->data[pq->size];
+    pq->data[pq->size] = 0;
+    pq->size--;
+
+    fall( pq, 1 );
+
+    return result;
+  } // if
+  else {
+    return -99;
+  } // else
+} // pqEnqueue()
+
+ProcessPointer peekPQ( PriorityQueuePointer pq ) {
+  return pq->data[1];
+} // peek( PriorityQueuePointer )
+
+
 // Verify that the elements of the doubly-linked
 // list are correctly linked.
 void testQueue( int numberOfProcesses ) {
@@ -359,8 +466,7 @@ double computeMeanTimeProcess (QueuePointer processQueuePointer) {
   return total / processQueuePointer->length;
 }
 double computeAverageInterarrivalTime(QueuePointer processQueuePointer) {
-  NodePointer cp;
-    cp = processQueuePointer->pointerToHead;
+  NodePointer cp = processQueuePointer->pointerToHead;
     double total = 0;
     while (cp != NULL) {
       total += cp->processPointer->interarrivalTime;
@@ -369,9 +475,8 @@ double computeAverageInterarrivalTime(QueuePointer processQueuePointer) {
   return total / processQueuePointer->length;
 }
 double maxWaitingTime(QueuePointer processQueuePointer) {
-  double maxTime;
-  NodePointer cp;
-    cp = processQueuePointer->pointerToHead;
+  double maxTime = 0.0;
+  NodePointer cp = processQueuePointer->pointerToHead;
     while (cp != NULL) {
       double waitingTime = cp->processPointer->serviceStartTime - 
                               cp->processPointer->arrivalTime;
@@ -382,19 +487,27 @@ double maxWaitingTime(QueuePointer processQueuePointer) {
   }
   return maxTime;
 }
+
 int main( int argc, char** argv ) {
 
   //testQueue( 6 );
 
-  QueuePointer processQueuePointer = buildQueue(10);
-  computeStuff(processQueuePointer);
-  printProcessesInQueue(processQueuePointer);
-  printf("Average Process Time is: ");
-  printf("%8.4f\n", computeMeanTimeProcess(processQueuePointer));
-  printf("Average Interarrival Time is: ");
-  printf("%8.4f\n", computeAverageInterarrivalTime(processQueuePointer));
-  printf("Maximum Waiting Iime is: ");
-  printf("%8.4f\n", maxWaitingTime(processQueuePointer));
+  QueuePointer processQueuePointer = buildQueue(100);
+  PriorityQueuePointer qpq = createPriorityQueue(1000);
+  while ( !isQueueEmpty(processQueuePointer)) {
+    ProcessPointer pp = dequeue(processQueuePointer);
+    pqEnqueue(qpq, pp);
+  }
+  printPriorityQueue(pqp);
+
+  // computeStuff(processQueuePointer);
+  // printProcessesInQueue(processQueuePointer);
+  // printf("Average Process Time is: ");
+  // printf("%8.4f\n", computeMeanTimeProcess(processQueuePointer));
+  // printf("Average Interarrival Time is: ");
+  // printf("%8.4f\n", computeAverageInterarrivalTime(processQueuePointer));
+  // printf("Maximum Waiting Iime is: ");
+  // printf("%8.4f\n", maxWaitingTime(processQueuePointer));
 
 
   exit(0);
