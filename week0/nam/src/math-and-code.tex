@@ -1,0 +1,135 @@
+
+%%
+%% This file contains examples of slides
+%% that contain:
+%%  1) an itemized list
+%%  2) an enumerated list
+%%  3) mathematical equations
+%%  4) source code
+%%
+%% Edit this file in Linux by
+%% typing:
+%%   emacs slides-template.tex &
+%%
+%% Create slides to use in your presentation. 
+%% Follow the examples that I have given you.
+%%
+%% Create a PDF file from this file
+%% by typing:
+%%   pdflatex slides-template.tex
+%%
+%% Display a PDF file in Linux by
+%% typing:
+%%   evince slides-template.pdf &
+%%
+
+\documentclass{beamer}
+\title{Difference between FCFS and least service time schedualing}
+\author{Nam Phan}
+\institute{Cornell College}
+\date{04 December 2015}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{listings}
+\lstset{language=c}
+
+\setlength{\parskip}{12pt}
+
+\usetheme{Berlin}
+
+%% Try any of these themes:
+%% AnnArbor
+%% Antibes
+%% Bergen
+%% Berkeley
+%% Berlin
+%% Boadilla
+%% CambridgeUS
+%% Copenhagen
+%% Darmstadt
+%% Dresden
+%% Frankfurt
+%% Goettingen
+%% Hannover
+%% Ilmenau
+%% JuanLesPins
+%% Luebeck
+%% Madrid
+%% Malmoe
+%% Marburg
+%% Montpelier
+%% PaloAlto
+%% Pittsburgh
+%% Rochester
+%% Singapore
+%% Szeged
+%% Warsaw
+
+\usecolortheme{wolverine}
+
+%% Try any of these color themes:
+%% albatross
+%% beaver
+%% beetle
+%% crane
+%% dolphin
+%% dove
+%% fly 
+%% lily
+%% orchid
+%% rose
+%% seagull
+%% seahorse
+%% whale
+%% wolverine
+
+\usefonttheme{default}
+
+%% Try any of these font themes:
+%% default
+%% professionalfonts
+%% serif
+%% structurebold
+%% structureitalicserif
+%% structuresmallcapsserif
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Recursion}
+\begin{align*}
+  \gcd (a, b) & = \gcd( b, a \bmod b ) \\
+  \gcd( a, 0 ) & = 0
+  \end{align*}
+\end{frame}
+
+\begin{frame}[fragile]{Code}
+
+  \begin{lstlisting}{}
+    /* Variation of Hello, world program. */
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    int main( int argc, char** argv ){
+        printf( "Good morning!\n" );
+        exit(0);
+    } // main( int, char** )
+    \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}{Results}
+\begin{align*}
+  \gcd (a, b) & = \gcd( b, a \bmod b ) \\
+  \gcd( a, 0 ) & = 0
+  \end{align*}
+\end{frame}
+
+
+\end{document}
+

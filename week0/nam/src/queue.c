@@ -479,7 +479,7 @@ QueuePointer buildQueue( int numberOfProcesses ) {
 
   return qp;
 } // buildQueue( int )
-double computeMeanTimeProcess (QueuePointer processQueuePointer) {
+double computeAverageProcessTime (QueuePointer processQueuePointer) {
   NodePointer cp;
     cp = processQueuePointer->pointerToHead;
     double total = 0;
@@ -498,6 +498,17 @@ double computeAverageInterarrivalTime(QueuePointer processQueuePointer) {
   }
   return total / processQueuePointer->length;
 }
+double averageWaitingTime(QueuePointer processQueuePointer) {
+  double total;
+  NodePointer cp = processQueuePointer->pointerToHead;
+    while (cp != NULL) {
+      double waitingTime = cp->processPointer->serviceStartTime - 
+                              cp->processPointer->arrivalTime;
+      total += waitingTime;
+      cp = cp->pointerToPrevNode; 
+  }
+  return total/processQueuePointer->length;
+}
 double maxWaitingTime(QueuePointer processQueuePointer) {
   double maxTime = 0.0;
   NodePointer cp = processQueuePointer->pointerToHead;
@@ -515,19 +526,33 @@ int main( int argc, char** argv ) {
 
   //testQueue( 6 );
 
-  QueuePointer processQueuePointer = buildQueue(10);
+  QueuePointer beforeQp = buildQueue(100);;
   PriorityQueuePointer pqp = createPriorityQueue(1000);
-  while ( !isQueueEmpty(processQueuePointer)) {
-    ProcessPointer pp = dequeue(processQueuePointer);
+  computeStuff(beforeQp);
+
+  printf("First come first serve:\n");
+  // printProcessesInQueue(beforeQp);
+  printf("Average Waiting Time: %8.4f\n", averageWaitingTime(beforeQp));
+  printf("Maximum Waiting Time: %8.4f\n\n", maxWaitingTime(beforeQp));
+
+  while ( !isQueueEmpty(beforeQp)) {
+    ProcessPointer pp = dequeue(beforeQp);
     pqEnqueue(pqp, pp);
-    printf("\n");
   }
-  printf("The processing order is:\n");
+
+  printf("Shortest go first:\n");
+  
+  QueuePointer afterQp = createQueue();
   while (!isPriorityQueueEmpty(pqp)) {
-    printProcess(pqDequeue(pqp));
-    printf("\n");
+    ProcessPointer pp = pqDequeue(pqp);
+    enqueue(afterQp,pp);
   }
-  // computeStuff(processQueuePointer);
+
+  computeStuff(afterQp);
+  // printProcessesInQueue(afterQp);
+  printf("Average Waiting Time: %8.4f\n", averageWaitingTime(afterQp));
+  printf("Maximum Waiting Time: %8.4f\n\n\n", maxWaitingTime(afterQp));
+
   // printProcessesInQueue(processQueuePointer);
   // printf("Average Process Time is: ");
   // printf("%8.4f\n", computeMeanTimeProcess(processQueuePointer));
