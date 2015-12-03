@@ -1,4 +1,6 @@
 
+#include "process.h"
+
 typedef struct priorityQueue PriorityQueue, *PriorityQueuePointer;
 
 struct priorityQueue {
@@ -12,17 +14,17 @@ struct priorityQueue {
 
   // data is an array that holds the elements
   // in the priority queue
-  int *data;
+  ProcessPointer *data;
 }; // priorityQueue
 
 PriorityQueuePointer createPriorityQueue( int maximumSize );
 bool isPriorityQueueEmpty( PriorityQueuePointer pq );
 void rise( PriorityQueuePointer pq, int i );
-void pqEnqueue( PriorityQueuePointer pq, int n );
+void pqEnqueue( PriorityQueuePointer pq, ProcessPointer pp );
 void printPriorityQueue( PriorityQueuePointer pq );
 void fall( PriorityQueuePointer pq, int i );
-int pqDequeue( PriorityQueuePointer pq );
-int pqPeek( PriorityQueuePointer pq );
+ProcessPointer pqDequeue( PriorityQueuePointer pq );
+ProcessPointer pqPeek( PriorityQueuePointer pq );
 void testPriorityQueue();
 
 

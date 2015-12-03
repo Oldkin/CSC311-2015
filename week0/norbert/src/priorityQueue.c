@@ -10,10 +10,10 @@
 // return +1 if element i > element j
 // return  0 if element i == element j
 int compareElements( PriorityQueuePointer pq, int i, int j ) {
-  if( pq->data[i] < pq->data[j] ) {
+  if( pq->data[i]->serviceTime < pq->data[j]->serviceTime ) {
     return -1;
   } // if
-  else if( pq->data[i] > pq->data[j] ) {
+  else if( pq->data[i]->serviceTime > pq->data[j]->serviceTime ) {
     return +1;
   } // else if
   else {
@@ -22,7 +22,7 @@ int compareElements( PriorityQueuePointer pq, int i, int j ) {
 } // compareElements( PriorityQueuePointer, int, int )
 
 void swap( PriorityQueuePointer pq, int i, int j ) {
-    int temp = pq->data[i];
+    ProcessPointer temp = pq->data[i];
     pq->data[i] = pq->data[j];
     pq->data[j] = temp;
 } // swap( PriorityQueuePointer, int, int )
@@ -35,12 +35,13 @@ PriorityQueuePointer createPriorityQueue( int maximumSize ) {
   pq->size = 0;
   // create array that will hold elements in
   // priority queue
-  pq->data = (int *) malloc((1 + maximumSize) * sizeof(int));
+  pq->data = (ProcessPointer *) 
+      malloc((1 + maximumSize) * sizeof(ProcessPointer));
 
   // set values of all elements of array to zero
   int i;
   for( i = 0; i < maximumSize; i++ ) {
-    pq->data[i] = 0;
+    pq->data[i] = NULL;
   } // for
 
   return pq;
@@ -69,10 +70,10 @@ void rise( PriorityQueuePointer pq, int i ) {
 // add an element to the priority queue
 // (nothing happens and no error is reported
 // if there is no room for another element)
-void pqEnqueue( PriorityQueuePointer pq, int n ) {
+void pqEnqueue( PriorityQueuePointer pq, ProcessPointer pp ) {
   if( pq->size < pq->capacity ) {
     int index = 1 + pq->size;
-    pq->data[index] = n;
+    pq->data[index] = pp;
 
     rise( pq, index );
 
@@ -86,7 +87,9 @@ void pqEnqueue( PriorityQueuePointer pq, int n ) {
 void printPriorityQueue( PriorityQueuePointer pq ) {
   int i;
   for( i = 1; i <= pq->size; i++ ) {
-    printf( "%4d ", pq->data[i] );
+    printf( "%4d ", i );
+    printProcess(pq->data[i]);
+    printf( "\n" );
   } // for
   printf( "\n" );
 } // printPriorityQueue( PriorityQueuePointer )
@@ -121,25 +124,20 @@ void fall( PriorityQueuePointer pq, int i ) {
 // remove the element that has the highest
 // priority from the priority queue
 // (highest priority might mean smallest value)
-int pqDequeue( PriorityQueuePointer pq ) {
-  if( pq->size > 0 ) {
-    printPriorityQueue( pq );
+ProcessPointer pqDequeue( PriorityQueuePointer pq ) {
+  printPriorityQueue( pq );
 
-    int result = pq->data[1];
-    pq->data[1] = pq->data[pq->size];
-    pq->data[pq->size] = 0;
-    pq->size--;
+  ProcessPointer result = pq->data[1];
+  pq->data[1] = pq->data[pq->size];
+  pq->data[pq->size] = NULL;
+  pq->size--;
 
-    fall( pq, 1 );
+  fall( pq, 1 );
 
-    return result;
-  } // if
-  else {
-    return -99;
-  } // else
+  return result;
 } // pqEnqueue()
 
-int pqPeek( PriorityQueuePointer pq ) {
+ProcessPointer pqPeek( PriorityQueuePointer pq ) {
   return pq->data[1];
 } // peek( PriorityQueuePointer )
 
@@ -149,19 +147,19 @@ void testPriorityQueue() {
     isPriorityQueueEmpty(pq) );
 
 
-  pqEnqueue( pq, 5 );
-  pqEnqueue( pq, 2 );
-  pqEnqueue( pq, 3 );
-  pqEnqueue( pq, 1 );
-  pqEnqueue( pq, 4 );
+  pqEnqueue( pq, createProcess(2,3) );
+  pqEnqueue( pq, createProcess(2,3) );
+  pqEnqueue( pq, createProcess(2,3) );
+  pqEnqueue( pq, createProcess(2,3) );
+  pqEnqueue( pq, createProcess(2,3) );
 
   printPriorityQueue( pq );
 
   printf( "\n" );
 
   while( !isPriorityQueueEmpty(pq) ) {
-    int n = pqDequeue( pq );
-    printf( "highest priority item = %4d\n", n );
+    ProcessPointer pp = pqDequeue( pq );
+    printf( "highest priority item = %8.4f\n", pp->serviceTime );
   } // while
 
 } // testPriorityQueue()
