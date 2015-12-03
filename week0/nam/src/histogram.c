@@ -26,9 +26,9 @@ int main( int argc, char** argv ) {
       histogram[(int) floor(x/MAX * BINS)]++;
     } // if
   } // for
-
+  printf("Values Range, Frequency\n");
   for( i = 0; i < BINS; i++ ) {
-    printf( "Number of values between %8.4f and %8.4f is %4d\n",
+    printf( "%8.4f - %8.4f,  %4d\n",
 	    (i * MAX/BINS), ((i + 1) * MAX/BINS), histogram[i] );
   } // for
 } // main( int, char** )
