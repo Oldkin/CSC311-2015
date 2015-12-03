@@ -382,7 +382,7 @@ double maxWaitingTime(QueuePointer processQueuePointer) {
   }
   return maxTime;
 }
-int main( int argc, char** argv ) {
+int main() {
 
   //testQueue( 6 );
 
