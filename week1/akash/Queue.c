@@ -32,6 +32,13 @@
 typedef struct process Process, *ProcessPointer;
 typedef struct node Node, *NodePointer;
 typedef struct queue Queue, *QueuePointer;
+typedef struct priorityQueue PriorityQueue, *PriorityQueuePointer;
+
+struct priorityQueue {
+  int capacity;
+  int size;
+  double *data;
+}; // priorityQueue
 
 // A process is the basic unit of work in
 // the system.
@@ -69,6 +76,13 @@ struct process {
   // the customer has requested in the case that
   // the process is a customer in a bank)
   double serviceCompleteTime;
+
+  // waitTime is the amount of time a process waits
+  // after it arrives and before it is initiated.
+  // This can be calulcated by measuring the
+  // difference between arrivalTime and
+  // serviceStartTime.
+  double waitTime;
 }; // process
 
 // We can represent a queue with a doubly-linked
@@ -93,6 +107,92 @@ struct queue {
   NodePointer pointerToHead;
   NodePointer pointerToTail;
 }; // queue
+
+PriorityQueuePointer createPriorityQueue( int maximumSize ) {
+  PriorityQueuePointer pq = (PriorityQueuePointer) malloc(sizeof(PriorityQueue));
+  pq->capacity = maximumSize;
+  pq->size = 0;
+  pq->data = (double *) malloc((1 + maximumSize) * sizeof(int));
+
+  int i;
+  for( i = 0; i < maximumSize; i++ ) {
+    pq->data[i] = 0;
+  } // for
+
+  return pq;
+} // createPriorityQueue( int )
+
+bool isPriorityQueueEmpty( PriorityQueuePointer pq ) {
+  return pq->size == 0;
+} // isPriorityQueueEmpty( PriorityQueuePointer )
+
+void rise( double data[], int i ) {
+  int j = i/2;
+  if( i > 1 && data[j] > data[i] ) {
+    double temp = data[i];
+    data[i] = data[j];
+    data[j] = temp;
+
+    rise( data, j );
+  } // if
+} // rise( int[], int )
+
+void pqEnqueue( PriorityQueuePointer pq, double n ) {
+  if( pq->size < pq->capacity ) {
+    int index = 1 + pq->size;
+    pq->data[index] = n;
+
+    rise( pq->data, index );
+
+    pq->size++;
+  } // if
+} // pqEnqueue( int )
+
+void printPriorityQueue( PriorityQueuePointer pq ) {
+  int i;
+  for( i = 1; i <= pq->size; i++ ) {
+    printf( "%4f ", pq->data[i] );
+  } // for
+  printf( "\n" );
+} // printPriorityQueue( PriorityQueuePointer )
+
+void fall( PriorityQueuePointer pq, int i ) {
+  int j = 2 * i;
+  int k = 2 * i + 1;
+  if( k <= pq->size && pq->data[k] < pq->data[j] ) {
+    j = k;
+  } // if
+
+  if( j <= pq->size && pq->data[i] > pq->data[j] ) {
+    double temp = pq->data[i];
+    pq->data[i] = pq->data[j];
+    pq->data[j] = temp;
+
+    fall( pq, j );
+  } // if
+} // fall( PriorityQueuePointer, int )
+
+double pqDequeue( PriorityQueuePointer pq ) {
+  if( pq->size > 0 ) {
+    printPriorityQueue( pq );
+
+    double result = pq->data[1];
+    pq->data[1] = pq->data[pq->size];
+    pq->data[pq->size] = 0;
+    pq->size--;
+
+    fall( pq, 1 );
+
+    return result;
+  } // if
+  else {
+    return -99;
+  } // else
+} // pqDequeue()
+
+int peek( PriorityQueuePointer pq ) {
+  return pq->data[1];
+} // peek( PriorityQueuePointer )
 
 void seedRandomNumberGenerator() {
   // Seed the random number generator
@@ -132,7 +232,7 @@ ProcessPointer createProcess() {
 } // createProcess()
 
 void printProcess( ProcessPointer pp ) {
-  printf( "process #%3d: (%8.4f, %8.4f, %8.4f, %8.4f, %8.4f)\n",
+  printf( "| process #%3d |  %8.4f    |     %8.4f      |  %8.4f    |     %8.4f       |       %8.4f        |\n",
 	  pp->id,
           pp->serviceTime,
           pp->interarrivalTime,
@@ -196,28 +296,20 @@ void printQueue( QueuePointer qp ) {
 // service begins, and time at which service is completed.
 void printProcessesInQueue( QueuePointer qp ) {
   NodePointer np = qp->pointerToHead;
+  printf( "---------------------------------------------------------------------------------------------------------------\n");
+  printf( "| process # id | Service Time | Interarrival Time | Arrival Time | Service Start Time | Service Complete Time |\n");
+  printf( "---------------------------------------------------------------------------------------------------------------\n");
   while( np != NULL ) {
     printProcess( np->processPointer );
     np = np->pointerToPrevNode;
   } // while
+  printf( "---------------------------------------------------------------------------------------------------------------\n");
 } // printProcessInQueue( QueuePointer )
 
 bool isQueueEmpty( QueuePointer qp ) {
   return (qp->pointerToHead == NULL) &&
     (qp->pointerToTail == NULL);
 } // isQueueEmpty( QueuePointer )
-
-// Take a look at the process that is at
-// the head of the line.
-ProcessPointer peek( QueuePointer qp ) {
-  ProcessPointer pp = NULL;
-
-  if( qp->pointerToHead != NULL ) {
-    pp = qp->pointerToHead->processPointer;
-  } // if
-
-  return pp;
-} // peek( QueuePointer )
 
 // Add a process at the end of the line.
 void enqueue( QueuePointer qp, ProcessPointer pp ) {
@@ -261,86 +353,6 @@ ProcessPointer dequeue( QueuePointer qp ) {
   return pp;
 } // dequeue( QueuePointer )
 
-// Verify that the elements of the doubly-linked
-// list are correctly linked.
-void testQueue( int numberOfProcesses ) {
-  seedRandomNumberGenerator();
-
-  QueuePointer qp = createQueue();
-
-  printf( "\n\nBegin adding elements to the queue.\n\n" );
-  printQueue( qp );
-
-  double elapsedTime = 0.0;
-  int i;
-  for( i = 0; i < numberOfProcesses; i++ ) {
-    ProcessPointer pp = createProcess();
-    elapsedTime += pp->interarrivalTime;
-    pp->arrivalTime = elapsedTime;
-
-    enqueue( qp, pp );
-    printQueue( qp );
-  } // for
-
-  // Begin at front of queue and work our
-  // way back to the tail, computing the
-  // times at which service begins and ends
-  // for each of the processes that we encounter
-  // along the way
-
-  // cnp points to the current node in the linked list
-  NodePointer cnp = qp->pointerToHead;
-  while(cnp != NULL){
-
-        // cpp points to the current process
-        ProcessPointer cpp = cnp->processPointer;
-
-        // There is no node in front of the first node
-        if(cnp->pointerToNextNode == NULL){
-          cpp->serviceStartTime = cpp->arrivalTime;
-        } // if
-        else {
-
-          // serviceCompleteTime of the process before
-          double a = cnp->pointerToNextNode->processPointer->serviceCompleteTime;
-
-          // arrivalTime
-          double b = cpp->arrivalTime;
-
-            // The process' serviceStartTime is
-            // the larger of this process' arrivalTime
-            // and the serviceCompleteTime of the process before
-            if(a > b){
-              cpp->serviceStartTime = a;
-            } // if
-            else{
-              cpp->serviceStartTime = b;
-            } // else
-        } // else
-
-        // Computes this process' serviceCompleteTime
-        // by adding the process' serviceStartTime
-        // and serviceTime
-        cpp->serviceCompleteTime = cpp->serviceStartTime + cpp->serviceTime;
-
-        cnp = cnp->pointerToPrevNode;
-  }
-
-  printf( "\n" );
-  printProcessesInQueue( qp );
-
-  printf( "\nBegin removing elements from the queue.\n\n" );
-  printQueue( qp );
-
-  while( !isQueueEmpty( qp ) ) {
-    ProcessPointer pp = dequeue( qp );
-    printQueue( qp );
-    free( pp );
-  } // while
-
-  printf("\n");
-} // testQueue( int )
-
 // Create a queue and fill it with a specified
 // number of processes.
 QueuePointer buildQueue( int numberOfProcesses ) {
@@ -360,9 +372,60 @@ QueuePointer buildQueue( int numberOfProcesses ) {
   return qp;
 } // buildQueue( int )
 
+ProcessPointer sort(QueuePointer qp, double n){
+  NodePointer np = qp->pointerToHead;
+  ProcessPointer ppp = NULL;
+
+  for(int i = 0; i < qp->length; i++){
+    ProcessPointer pp = np->processPointer;
+    double input = pp->serviceTime;
+
+    if(input == n){
+      ppp = pp;
+      // printProcess(ppp);
+      return ppp;
+    }
+    np = np->pointerToPrevNode;
+  }// for
+
+  return NULL;
+}
+
+QueuePointer test(QueuePointer qp){
+  PriorityQueuePointer pq = createPriorityQueue(qp->length);
+  QueuePointer qpp = createQueue();
+  NodePointer np = qp->pointerToHead;
+
+  for(int i = 0; i < qp->length; i++){
+    ProcessPointer pp = np->processPointer;
+    double input = pp->serviceTime;
+
+    pqEnqueue(pq, input);
+    np = np->pointerToPrevNode;
+  }
+
+  printf("\n");
+  np = qp->pointerToHead;
+
+  while( !isPriorityQueueEmpty(pq) ) {
+    double n = pqDequeue(pq);
+    printf( "highest priority item = %8.4f\n", n );
+
+    ProcessPointer pp = sort(qp, n);
+    pp->arrivalTime = 0.0;
+    pp->serviceStartTime = 0.0;
+    pp->serviceCompleteTime = 0.0;
+    enqueue(qpp, pp);
+  } // while
+
+  printf("\n");
+
+  return qpp;
+}
+
 int main( int argc, char** argv ) {
 
-  testQueue(6);
+  seedRandomNumberGenerator();
 
   // Creates an empty queue
   QueuePointer qp = createQueue();
@@ -378,8 +441,18 @@ int main( int argc, char** argv ) {
   // (or customers).
   double meanInterarrivalTime = 0.0;
 
+  // meanWaitTime is the measure of
+  // the average amount of time the
+  // processes had to wait after arrival
+  // before being implemented
+  double meanWaitTime = 0.0;
+
+  // maximumWaitTime measures the highest
+  // amount of time a process had to wait
+  double maximumWait = 0.0;
+
   // N number of processes to add to the queue
-  int N = 6;
+  int N = 10;
 
   double elapsedTime = 0.0;
   // Loop that adds N number of processes
@@ -393,8 +466,16 @@ int main( int argc, char** argv ) {
     meanInterarrivalTime += pp->interarrivalTime;
 
     enqueue( qp, pp );
-    printQueue( qp );
+    // printQueue( qp );
   } // for
+
+  // variables for caluclating the mean
+  meanServiceTime = meanServiceTime/N;
+  meanInterarrivalTime = meanInterarrivalTime/N;
+
+  // variables for calulating the varience
+  double varServiceTime = 0.0;
+  double varInterarrivalTime = 0.0;
 
   NodePointer cnp = qp->pointerToHead;
   while(cnp != NULL){
@@ -429,24 +510,132 @@ int main( int argc, char** argv ) {
         // by adding the process' serviceStartTime
         // and serviceTime
         cpp->serviceCompleteTime = cpp->serviceStartTime + cpp->serviceTime;
-
         cnp = cnp->pointerToPrevNode;
+
+        // Calculate the deviation of each serviceTime
+        // and then square the value
+        varServiceTime += pow(cpp->serviceTime - meanServiceTime, 2);
+
+        // Calculate the deviation of each interarrivalTime
+        // and then square the value
+        varInterarrivalTime += pow(cpp->interarrivalTime - meanInterarrivalTime, 2);
+
+        // Caluclate the amount of time a process has to wait
+        // before being initiated
+        cpp->waitTime = cpp->serviceStartTime - cpp->arrivalTime;
+
+        // Calculates the sum of all waitTimes
+        meanWaitTime += cpp->waitTime;
+
+        // Finding the maximumWait
+        if(maximumWait < cpp->waitTime){
+          maximumWait = cpp->waitTime;
+        }
   }
 
+  varServiceTime = varServiceTime/N;
+  varInterarrivalTime = varInterarrivalTime/N;
+
+  meanWaitTime = meanWaitTime/N;
+
   printf( "\n" );
-  printProcessesInQueue( qp );
+  printProcessesInQueue(qp);
 
-  printf("\nMean Service Time: %8.4f \nMean interarrival Time: %8.4f", meanServiceTime/N, meanInterarrivalTime/N);
+  printf("\n     Mean Service Time = %8.4f\n              Varience = %8.4f \n\nMean Interarrival Time = %8.4f\n              Varience = %8.4f",
+        meanServiceTime, varServiceTime, meanInterarrivalTime, varInterarrivalTime);
+  printf("\n\n        Mean Wait Time = %8.4f", meanWaitTime);
+  printf("\n     Maximum Wait Time = %8.4f", maximumWait);
   printf( "\n" );
+  // printf( "\nBegin removing elements from the queue.\n\n" );
+  // printQueue( qp );
 
-  printf( "\nBegin removing elements from the queue.\n\n" );
-  printQueue( qp );
+  QueuePointer qpp = test(qp);
 
-  while( !isQueueEmpty( qp ) ) {
-    ProcessPointer pp = dequeue( qp );
-    printQueue( qp );
-    free( pp );
-  } // while
+  cnp = qpp->pointerToHead;
+
+  elapsedTime = 0.0;
+  // Loop that adds N number of processes
+  // to the queue
+  for(int i = 0; i < N; i++ ) {
+    ProcessPointer pp = cnp->processPointer;
+    elapsedTime += pp->interarrivalTime;
+    pp->arrivalTime = elapsedTime;
+
+    meanServiceTime += pp->serviceTime;
+    meanInterarrivalTime += pp->interarrivalTime;
+  } // for
+
+  // variables for caluclating the mean
+  meanServiceTime = meanServiceTime/N;
+  meanInterarrivalTime = meanInterarrivalTime/N;
+
+  while(cnp != NULL){
+
+        // cpp points to the current process
+        ProcessPointer cpp = cnp->processPointer;
+
+        // There is no node in front of the first node
+        if(cnp->pointerToNextNode == NULL){
+          cpp->serviceStartTime = cpp->arrivalTime;
+        } // if
+        else {
+
+          // serviceCompleteTime of the process before
+          double a = cnp->pointerToNextNode->processPointer->serviceCompleteTime;
+
+          // arrivalTime
+          double b = cpp->arrivalTime;
+
+            // The process' serviceStartTime is
+            // the larger of this process' arrivalTime
+            // and the serviceCompleteTime of the process before
+            if(a > b){
+              cpp->serviceStartTime = a;
+            } // if
+            else{
+              cpp->serviceStartTime = b;
+            } // else
+        } // else
+
+        // Computes this process' serviceCompleteTime
+        // by adding the process' serviceStartTime
+        // and serviceTime
+        cpp->serviceCompleteTime = cpp->serviceStartTime + cpp->serviceTime;
+        cnp = cnp->pointerToPrevNode;
+
+        // Calculate the deviation of each serviceTime
+        // and then square the value
+        varServiceTime += pow(cpp->serviceTime - meanServiceTime, 2);
+
+        // Calculate the deviation of each interarrivalTime
+        // and then square the value
+        varInterarrivalTime += pow(cpp->interarrivalTime - meanInterarrivalTime, 2);
+
+        // Caluclate the amount of time a process has to wait
+        // before being initiated
+        cpp->waitTime = cpp->serviceStartTime - cpp->arrivalTime;
+
+        // Calculates the sum of all waitTimes
+        meanWaitTime += cpp->waitTime;
+
+        // Finding the maximumWait
+        if(maximumWait < cpp->waitTime){
+          maximumWait = cpp->waitTime;
+        }
+  }
+
+  varServiceTime = varServiceTime/N;
+  varInterarrivalTime = varInterarrivalTime/N;
+
+  meanWaitTime = meanWaitTime/N;
+
+  printProcessesInQueue(qpp);
+
+  printf("\n     Mean Service Time = %8.4f\n              Varience = %8.4f \n\nMean Interarrival Time = %8.4f\n              Varience = %8.4f",
+        meanServiceTime, varServiceTime, meanInterarrivalTime, varInterarrivalTime);
+  printf("\n\n        Mean Wait Time = %8.4f", meanWaitTime);
+  printf("\n     Maximum Wait Time = %8.4f", maximumWait);
+  printf( "\n" );
 
   exit(0);
 } //  main( int, char** )
