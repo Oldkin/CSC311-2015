@@ -15,8 +15,20 @@ schedules: src/schedules.c
 	gcc src/schedules.c -lm -o schedules -Wall
 treesort: src/treesort.c
 	gcc src/treesort.c -o treesort -Wall
+fcfs: src/fcfs.c src/priorityQueue.c src/process.c src/queue.c
+	gcc src/fcfs.c -c -Wall
+	gcc src/priorityQueue.c -c -Wall
+	gcc src/process.c -c -Wall
+	gcc src/queue.c -c -Wall
+	gcc fcfs.o priorityQueue.o process.o queue.o -lm -o fcfs
 
 clean:
-	rm -f eratosthenes src/eratosthenes.c~
-	rm -f schedules src/schedules.c~
-	rm -f treesort src/treesort.c~
+	rm -f eratosthenes eratosthenes.o src/eratosthenes.c~
+	rm -f schedules schedules.o src/schedules.c~
+	rm -f treesort treesort.o src/treesort.c~
+	rm -f queue queue.o  
+	rm -f src/queue.h~ src/queue.c~
+	rm -f priorityQueue priorityQueue.o
+	rm -f src/priorityQueue.h~ src/priorityQueue.c~
+	rm -f process process.o 
+	rm -f src/process.h~ src/process.c~
