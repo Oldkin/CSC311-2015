@@ -24,7 +24,7 @@
 
 \documentclass{beamer}
 \title{Autobiographical Note}
-\author{Nam Phan}
+\author{Norbert Wiener}
 \institute{Cornell College}
 \date{23 November 2015}
 
@@ -36,7 +36,7 @@
 
 \setlength{\parskip}{12pt}
 
-\usetheme{Singapore}
+\usetheme{Dresden}
 
 %% Try any of these themes:
 %% AnnArbor
@@ -66,7 +66,7 @@
 %% Szeged
 %% Warsaw
 
-\usecolortheme{beaver}
+\usecolortheme{dolphin}
 
 %% Try any of these color themes:
 %% albatross
@@ -84,7 +84,7 @@
 %% whale
 %% wolverine
 
-\usefonttheme{structurebold}
+\usefonttheme{default}
 
 %% Try any of these font themes:
 %% default
@@ -103,36 +103,54 @@
 \begin{frame}{Quotation}
 \begin{quotation}
 \noindent
-``People think that computer science is the art of geniuses but the actual reality is the opposite, just many people doing things that build on each other, like a wall of mini stones.''
+``No, the future offers very little hope for those who expect that our
+  new mechanical slaves will offer us a world in which we may rest
+  from thinking. Help us they may, but at the cost of supreme demands
+  upon our honesty and our intelligence.  The world of the future will
+  be an ever more demanding struggle against the limitations of our
+  intelligence, not a comfortable hammock in which we can lie down to
+  be waited upon by our robot slaves.''
   \flushright
-  ---Donald Knuth
+  ---Norbert Wiener
   \end{quotation}
 \end{frame}
 
 \begin{frame}{Biographical facts}
 \begin{itemize}
-  \item born 24 December 1995 in Moscow, Russia
-  \item have been to US, Russia, and China
-  \item BA, Cornell College, 2017 (expected)
-  
+  \item born 26 November 1894 in Columbia, Missouri
+  \item child prodigy
+  \item BA, Tufts University, 1909
+  \item PhD, Harvard University, 1913
+  \item long career as legendary professor of mathematics, MIT
+  \item died 18 March 1964 in Stockholm, Sweden
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Interesting facts}
 \begin{itemize}
-  \item know the capital cites of more than 100 countries
-  \item can be really excited examining any kind of map
-  \item used to read a lot of books a lot as a kid
+  \item crater on the moon is named for Norbert Wiener
+  \item spaceship in Robert Heinlein story
+    named \emph{Norbert Wiener}
+  \item \emph{Norbert Wiener Prize in Applied Mathematics} honors him
+  \item affectionately remembered as an absent-minded professor
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Special interests}
 \begin{itemize}
-  \item watching soccer and tennis
+  \item Brownian motion, control \& information theory,
+    automation
   \item how technological innovation will
     change society 
-  \item playing video games with my friends
-  \item studying about history
+  \begin{itemize}
+    \item wrote \emph{The Human Use of Human Beings}
+    \end{itemize}
+  \item how feedback in machines might imitate feedback in body
+  \begin{itemize}
+    \item wrote \emph{Cybernetics: Or Control
+      and Communication in the Animal and the Machine}
+    \end{itemize}
+  \item studied in China (learned Mandarin), Mexico, Germany, UK
   \end{itemize}
 \end{frame}
 
